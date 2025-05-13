@@ -2,6 +2,121 @@ import React from 'react';
 import Card from '../components/ui/Card';
 import { useTheme } from '../context/ThemeContext';
 import { Calendar, BarChart, PieChart, TrendingUp, MessageSquare, Activity } from 'lucide-react';
+import { Line, Bar, Pie } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const DonationTrendsChart = () => {
+  const data = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    datasets: [
+      {
+        label: 'Donations',
+        data: [65, 59, 80, 81, 56, 55],
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Monthly Donation Trends',
+      },
+    },
+  };
+
+  return <Line data={data} options={options} />;
+};
+
+const CategoryDistributionChart = () => {
+  const data = {
+    labels: ['Clothing', 'Food', 'Medical', 'Education'],
+    datasets: [
+      {
+        data: [35, 28, 18, 19],
+        backgroundColor: [
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(75, 192, 192, 0.8)',
+          'rgba(255, 206, 86, 0.8)',
+          'rgba(255, 99, 132, 0.8)',
+        ],
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right' as const,
+      },
+      title: {
+        display: true,
+        text: 'Donation Categories',
+      },
+    },
+  };
+
+  return <Pie data={data} options={options} />;
+};
+
+const PredictionAccuracyChart = () => {
+  const data = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    datasets: [
+      {
+        label: 'Accuracy',
+        data: [92, 88, 93, 95, 89, 91],
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'AI Prediction Accuracy',
+      },
+    },
+  };
+
+  return <Bar data={data} options={options} />;
+};
 
 const AnalyticsPage: React.FC = () => {
   const { theme } = useTheme();
@@ -105,12 +220,8 @@ const AnalyticsPage: React.FC = () => {
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card title="Donation Trends" subtitle="Monthly donation volume by category">
-          <div 
-            className={`w-full h-[300px] rounded-lg flex items-center justify-center ${
-              theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
-            }`}
-          >
-            <p className="text-gray-500">Bar chart visualization would be displayed here</p>
+          <div className="w-full h-[300px]">
+            <DonationTrendsChart />
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4 text-center">
             <div>
@@ -125,12 +236,8 @@ const AnalyticsPage: React.FC = () => {
         </Card>
         
         <Card title="Donation Distribution" subtitle="Percentage allocation across categories">
-          <div 
-            className={`w-full h-[300px] rounded-lg flex items-center justify-center ${
-              theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
-            }`}
-          >
-            <p className="text-gray-500">Pie chart visualization would be displayed here</p>
+          <div className="w-full h-[300px]">
+            <CategoryDistributionChart />
           </div>
           <div className="mt-4 grid grid-cols-4 gap-2 text-center">
             <div>
@@ -159,12 +266,8 @@ const AnalyticsPage: React.FC = () => {
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Card title="AI Prediction Accuracy" subtitle="Model performance metrics">
-          <div 
-            className={`w-full h-[250px] rounded-lg flex items-center justify-center ${
-              theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
-            }`}
-          >
-            <p className="text-gray-500">Line chart visualization would be displayed here</p>
+          <div className="w-full h-[250px]">
+            <PredictionAccuracyChart />
           </div>
           <div className="mt-4 space-y-4">
             <div className="flex justify-between items-center">
