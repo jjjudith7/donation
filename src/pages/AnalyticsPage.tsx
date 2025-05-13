@@ -3,6 +3,7 @@ import Card from '../components/ui/Card';
 import { useTheme } from '../context/ThemeContext';
 import { Calendar, BarChart, PieChart, TrendingUp, MessageSquare, Activity } from 'lucide-react';
 import { Line, Bar, Pie } from 'react-chartjs-2';
+import BlockchainVisualization from '../components/analytics/BlockchainVisualization';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -364,49 +365,22 @@ const AnalyticsPage: React.FC = () => {
           </div>
         </Card>
         
-        <Card title="Blockchain Transparency" subtitle="Smart contract activity">
-          <div 
-            className={`w-full h-[250px] rounded-lg flex items-center justify-center ${
-              theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
-            }`}
-          >
-            <p className="text-gray-500">Blockchain visualization would be displayed here</p>
+        <Card title="Blockchain Activity" subtitle="Real-time visualization of donation transactions">
+          <div className="h-[250px]">
+            <BlockchainVisualization />
           </div>
-          <div className="mt-4 space-y-2 text-sm">
-            <div className={`p-2 rounded ${
-              theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
-            }`}>
-              <div className="flex justify-between">
-                <span className="font-mono text-xs truncate w-32">0x7Fc9...3a24</span>
-                <span className="text-green-600 dark:text-green-400">+$500</span>
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Donation to Medical Fund
-              </div>
+          <div className="mt-4 grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Total Blocks</p>
+              <p className="text-lg font-semibold">1,284</p>
             </div>
-            
-            <div className={`p-2 rounded ${
-              theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
-            }`}>
-              <div className="flex justify-between">
-                <span className="font-mono text-xs truncate w-32">0x3aB8...9c12</span>
-                <span className="text-blue-600 dark:text-blue-400">Transfer</span>
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Fund distribution to recipient
-              </div>
+            <div>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Transactions</p>
+              <p className="text-lg font-semibold">8,392</p>
             </div>
-            
-            <div className={`p-2 rounded ${
-              theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
-            }`}>
-              <div className="flex justify-between">
-                <span className="font-mono text-xs truncate w-32">0x8dF1...6b45</span>
-                <span className="text-green-600 dark:text-green-400">+$250</span>
-              </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Donation to Education Fund
-              </div>
+            <div>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Network Health</p>
+              <p className="text-lg font-semibold text-green-500">98.5%</p>
             </div>
           </div>
         </Card>
