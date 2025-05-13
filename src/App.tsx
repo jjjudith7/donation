@@ -1,12 +1,12 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from './context/ThemeContext';
 import { LocationProvider } from './context/LocationContext';
 import { InventoryProvider } from './context/InventoryContext';
 import { AnalyticsProvider } from './context/AnalyticsContext';
 import { MatchingProvider } from './context/MatchingContext';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Layout from './components/layout/Layout';
 import HomePage from './pages/HomePage';
 import DashboardPage from './pages/DashboardPage';
@@ -18,8 +18,37 @@ import NotFoundPage from './pages/NotFoundPage';
 import LogisticsPage from './pages/LogisticsPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import AvailableDonationsPage from './pages/AvailableDonationsPage';
+import SettingsPage from './pages/SettingsPage';
 
 const queryClient = new QueryClient();
+
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/auth" />;
+  }
+
+  return <>{children}</>;
+};
+
+const PublicRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (user) {
+    return <Navigate to="/dashboard" />;
+  }
+
+  return <>{children}</>;
+};
 
 function App() {
   return (
@@ -32,7 +61,17 @@ function App() {
                 <AuthProvider>
                   <Router>
                     <Routes>
-                      <Route path="/" element={<Layout />}>
+                      <Route path="/auth" element={
+                        <PublicRoute>
+                          <AuthPage />
+                        </PublicRoute>
+                      } />
+                      
+                      <Route path="/" element={
+                        <ProtectedRoute>
+                          <Layout />
+                        </ProtectedRoute>
+                      }>
                         <Route index element={<HomePage />} />
                         <Route path="dashboard" element={<DashboardPage />} />
                         <Route path="donate" element={<DonationPage />} />
@@ -41,9 +80,9 @@ function App() {
                         <Route path="logistics" element={<LogisticsPage />} />
                         <Route path="analytics" element={<AnalyticsPage />} />
                         <Route path="profile" element={<ProfilePage />} />
+                        <Route path="settings" element={<SettingsPage />} />
                         <Route path="*" element={<NotFoundPage />} />
                       </Route>
-                      <Route path="/auth" element={<AuthPage />} />
                     </Routes>
                   </Router>
                 </AuthProvider>
